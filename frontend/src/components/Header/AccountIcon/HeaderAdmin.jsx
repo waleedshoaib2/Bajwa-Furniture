@@ -47,6 +47,14 @@ export default function HeaderAdmin({
           sx={MenuItemStyle}
         >
           Users
+          
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => navigate("/admin/categorylist")}
+          sx={MenuItemStyle}
+        >
+          Category
         </MenuItem>
         <MenuItem
           onClick={() => navigate("/admin/productlist")}

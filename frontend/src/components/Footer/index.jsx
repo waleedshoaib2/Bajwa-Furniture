@@ -7,7 +7,7 @@ export default function Footer() {
     <ul className="footer">
       <li onClick={() => navigate("/legal")}>Terms of use</li>
       <li onClick={() => navigate("/privacy")}>Privacy</li>
-      <li>Copyright © Stable 2023</li>
+      <li>Bajwa Furniture</li>
     </ul>
   );
 }

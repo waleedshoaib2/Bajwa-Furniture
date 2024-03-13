@@ -28,6 +28,8 @@ import Meta from "./components/Meta";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfServices from "./pages/TermsOfServices";
+import AdminCategoryList from "./pages/AdminCategorylist/AdminCategoryList";
+import AdminCreateCategory from "./pages/AdminCreateCategory/index";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -66,6 +68,7 @@ function App() {
             <Route path="/admin/userlist" element={<AdminUserList />} />
             <Route path="/admin/editUser/:id" element={<AdminEditUser />} />
             <Route path="/admin/productlist/" element={<AdminProductList />} />
+            <Route path = "/admin/categorylist/" element = {<AdminCategoryList />} />
             <Route
               path="/admin/editproduct/:id"
               element={<AdminEditProduct />}
@@ -78,6 +81,10 @@ function App() {
             <Route
               path="/admin/orderdetails/:id"
               element={<AdminEditOrder />}
+            />
+             <Route
+              path="/admin/createcategory/"
+              element={<AdminCreateCategory />}
             />
           </Route>
           <Route path="*" element={<NotFound />} />

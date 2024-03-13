@@ -37,14 +37,7 @@ export default function LoginPage() {
     dispatch(login(email, password));
   }
 
-  function demoUserHandler(e) {
-    e.preventDefault();
-    dispatch(login("john@example.com", "123456"));
-  }
-  function demoAdminHandler(e) {
-    e.preventDefault();
-    dispatch(login("admin@example.com", "123456"));
-  }
+
 
   return (
     <div className="auth">

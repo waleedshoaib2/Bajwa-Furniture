@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import path from "node:path";
-import productRoutes from "./routes/productRoutes.js";
+// import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import stripeRoutes from "./routes/stripeRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 // import enforce from "express-sslify";
 
 // Configured .env file and Connect to MongoDB Altas
@@ -27,9 +28,10 @@ server.use(express.urlencoded({ extended: false }));
 // parse request body to JSON format
 server.use(express.json());
 
-server.use("/api/products", productRoutes);
+// server.use("/api/products", productRoutes);
 server.use("/api/users", userRoutes);
 server.use("/api/orders", orderRoutes);
+server.use("/api/categories",categoryRoutes)
 
 // const __dirname = path.resolve();
 // if (process.env.MODE === "production") {

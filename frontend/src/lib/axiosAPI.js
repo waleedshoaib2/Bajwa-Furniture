@@ -24,16 +24,17 @@ export const userGetAllOrders = async (userInfo, currPageQuery) => {
 };
 
 export const adminCreateProduct = async (userInfo, formData) => {
+
   const config = {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${userInfo.token}`, // Assuming 'Authorization' header is needed
+      Authorization: `Bearer ${userInfo.token}`, 
     },
     body: formData
   };
 
   try {
-    const response = await fetch('http://localhost:4000/api/products/', config);
+    const response = await fetch('http://localhost:4000/product/products/', config);
     const data = await response.json(); // Assuming a JSON response
     return data; 
   } catch (error) {
@@ -126,6 +127,61 @@ export const adminGetProducts = async (userInfo, pageNumber) => {
   );
 };
 
+
+export const adminGetCategory = async (userInfo) => {
+  const config = {
+    headers: {
+      Bearer: `${userInfo.token}`,
+    },
+  };
+  return await axios.get(
+    `http://localhost:4000/api/categories/`,
+    config
+  );
+};
+
+export const adminDeleteCategory = async (userInfo, categoryID) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`, 
+      },
+    };
+
+    const { data } = await axios.delete(
+      `http://localhost:4000/api/categories/${categoryID}`, // Adjust your API endpoint URL
+      config
+    );
+
+    return data; // Assuming your API returns a success message or relevant data
+  } catch (error) {
+    throw error; // Pass the error up for handling in your component
+  }
+};
+
+
+export const adminCreateCategory = async (userInfo, formData) => {
+  console.log(formData)
+  const config = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`, // Assuming 'Authorization' header is needed
+    },
+    body: formData
+  };
+
+  try {
+    const response = await fetch('http://localhost:4000/api/categories/', config);
+
+    const data = await response.json(); // Assuming a JSON response
+    return data; 
+  } catch (error) {
+    console.log("some")
+    console.error("Error creating product:", error);
+    // You might want to do more robust error handling here 
+    throw error; // Re-throw to allow handling at a higher level
+  } 
+};
 export const adminDeleteProduct = async (userInfo, id) => {
   console.log(userInfo);
   const config = {
@@ -161,7 +217,7 @@ export const adminDeleteUser = async (userInfo, id) => {
 export const addProductComment = async (userInfo, id, formData) => {
   const config = {
     headers: {
-      Bearer: `${userInfo.token}`,
+      Authorization: `Bearer ${userInfo.token}`, // Assuming 'Authorization' header is needed
     },
   };
   return await axios.post(

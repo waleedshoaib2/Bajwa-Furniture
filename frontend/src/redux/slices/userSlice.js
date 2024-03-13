@@ -29,6 +29,7 @@ export const userSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.pending = false;
+      
       state.userInfo = action.payload;
     },
     loginFailed: (state, action) => {

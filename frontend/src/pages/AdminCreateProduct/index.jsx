@@ -15,15 +15,13 @@ export default function AdminCreateProduct() {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [category, setCategory] = React.useState("");
-  const [brand, setBrand] = React.useState("");
+  const [material, setMaterial] = React.useState("");
   const [price, setPrice] = React.useState("");
-  const [stock, setStock] = React.useState("");
-  const [newArrivals, setNewArrivals] = React.useState(false);
-  const [isRecommend, setIsRecommend] = React.useState(false);
-
+  const [color, setColor] = React.useState("");
   const [pending, setPending] = React.useState(false);
   const [error, setError] = React.useState();
   const [createSuccess, setCreateSuccess] = React.useState(false);
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -32,18 +30,21 @@ export default function AdminCreateProduct() {
 
     const formData = new FormData();
 
-    for (let i = 0; i < img.length; i++) {
-      formData.append("images", img[i]);
-    }
+  
+    formData.append("image", img);
+  
 
     formData.append("name", name);
     formData.append("description", description);
     formData.append("category", category);
-    formData.append("brand", brand);
+  
     formData.append("price", price);
-    formData.append("countInStock", stock);
-    formData.append("newArrivals", newArrivals);
-    formData.append("isRecommend", isRecommend);
+    formData.append("color", color);
+    formData.append("material", material);
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
 
     adminCreateProduct(userInfo, formData)
       .then(function (res) {
@@ -59,7 +60,27 @@ export default function AdminCreateProduct() {
         }
         setCreateSuccess(false);
       });
+
+
+   
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/categories/');
+        const data = await response.json(); 
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error); 
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+ 
+  
 
   return (
     <div className="auth">
@@ -84,6 +105,26 @@ export default function AdminCreateProduct() {
           />
         </div>
         <div className="auth__input__container">
+          <label htmlFor="update_material">Material: </label>
+          <input
+            id="update_material"
+            type="text"
+            onChange={(e) => setMaterial(e.target.value)}
+            value={material}
+            required
+          />
+        </div>
+        <div className="auth__input__container">
+          <label htmlFor="update_color">Color: </label>
+          <input
+            id="update_color"
+            type="text"
+            onChange={(e) => setColor(e.target.value)}
+            value={color}
+            required
+          />
+        </div>
+        <div className="auth__input__container">
           <label htmlFor="update_description">Description: </label>
           <textarea
             id="update_description"
@@ -103,18 +144,9 @@ export default function AdminCreateProduct() {
             required
           />
         </div>
+       
         <div className="auth__input__container">
-          <label htmlFor="update_brand">Brand: </label>
-          <input
-            id="update_brand"
-            type="text"
-            onChange={(e) => setBrand(e.target.value)}
-            value={brand}
-            required
-          />
-        </div>
-        <div className="auth__input__container">
-          <label htmlFor="update_price">Price (In Cent): </label>
+          <label htmlFor="update_price">Price (In Rupees): </label>
           <input
             id="update_price"
             type="number"
@@ -124,35 +156,6 @@ export default function AdminCreateProduct() {
             required
           />
         </div>
-        <div className="auth__input__container">
-          <label htmlFor="update_stock">Count In Stock: </label>
-          <input
-            id="update_stock"
-            type="number"
-            onChange={(e) => setStock(e.target.value)}
-            value={stock}
-            min="0"
-            required
-          />
-        </div>
-        <div className="auth__checkbox">
-          <input
-            id="update_newArrivals"
-            type="checkbox"
-            checked={newArrivals}
-            onChange={(e) => setNewArrivals(!newArrivals)}
-          />
-          <label htmlFor="update_newArrivals">New Arrivals?</label>
-        </div>
-        <div className="auth__checkbox">
-          <input
-            id="update_recommend"
-            type="checkbox"
-            checked={isRecommend}
-            onChange={(e) => setIsRecommend(!isRecommend)}
-          />
-          <label htmlFor="update_recommend">Recommend?</label>
-        </div>
 
         <div className="product-image-upload__container">
           <label htmlFor="product-image-upload">Image: </label>
@@ -161,7 +164,6 @@ export default function AdminCreateProduct() {
             style={{ border: "none ", borderRadius: "0" }}
             type="file"
             accept="image/*"
-            multiple
             onChange={(e) => setImg(e.target.files)}
           />
         </div>

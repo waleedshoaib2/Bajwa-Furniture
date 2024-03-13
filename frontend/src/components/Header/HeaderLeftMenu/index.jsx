@@ -14,10 +14,9 @@ export default function HeaderLeftMenu() {
   return (
     <div className="header__container">
        <img
-            height={100}
-            width={100}
+            height={180}
+            width={180}
             src="./logo.svg"
-            alt="car"
           />
       <NavigationText text={"Home"} url="/" />
       <NavigationText text={"New Arrivals"} url="/newarrivals" />

@@ -25,10 +25,11 @@ export const login = (email, password) => {
         },
       };
       const { data } = await axios.post(
-        `http://localhost:4000/api/users/login`,
+        `http://localhost:4000/user/login`,
         { email, password },
         config
       );
+      console.log(data);
       dispatch(loginSuccess(data));
       localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {

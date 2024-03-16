@@ -19,12 +19,16 @@ export default function AdminEditProduct() {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [category, setCategory] = React.useState("");
-  const [brand, setBrand] = React.useState("");
+  const [categories, setCategories] = React.useState(false);
+
   const [price, setPrice] = React.useState("");
-  const [stock, setStock] = React.useState("");
-  const [newArrivals, setNewArrivals] = React.useState(false);
-  const [isRecommend, setIsRecommend] = React.useState(false);
+  const [color, setColor] = React.useState("");
+
   const [createSuccess, setCreateSuccess] = React.useState(false);
+  const [material, setMaterial] = React.useState("");
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
 
   React.useEffect(() => {
     adminGetProduct(userInfo, params.id)
@@ -34,11 +38,10 @@ export default function AdminEditProduct() {
         setName(data.name);
         setDescription(data.description);
         setCategory(data.category);
-        setBrand(data.brand);
+        setMaterial(data.material);
         setPrice(data.price);
-        setStock(data.countInStock);
-        setIsRecommend(data.isRecommend);
-        setNewArrivals(data.isNewArrival);
+        setColor(data.color);
+
         setPending(false);
       })
       .catch(function (error) {
@@ -57,18 +60,12 @@ export default function AdminEditProduct() {
     setPending(true);
     const formData = new FormData();
 
-    for (let i = 0; i < img.length; i++) {
-      formData.append("images", img[i]);
-    }
-
     formData.append("name", name);
     formData.append("description", description);
     formData.append("category", category);
-    formData.append("brand", brand);
+    formData.append("color", color);
+
     formData.append("price", price);
-    formData.append("countInStock", stock);
-    formData.append("newArrivals", newArrivals);
-    formData.append("isRecommend", isRecommend);
 
     adminUpdateProduct(userInfo, params.id, formData)
       .then(function (res) {
@@ -84,6 +81,19 @@ export default function AdminEditProduct() {
         }
       });
   };
+
+  React.useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/categories/");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <div className="auth">
@@ -120,22 +130,42 @@ export default function AdminEditProduct() {
           ></textarea>
         </div>
         <div className="auth__input__container">
-          <label>Category: </label>
-          <input
+          <label htmlFor="update_category">Category: </label>
+          <select
             id="update_category"
-            type="text"
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={handleCategoryChange}
             value={category}
+            required
+          >
+            <option value="" disabled selected>
+              Select Category
+            </option>{" "}
+            {categories &&
+              categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="auth__input__container">
+          <label htmlFor="update_color">Color: </label>
+          <input
+            id="update_color"
+            type="text"
+            onChange={(e) => setColor(e.target.value)}
+            value={color}
             required
           />
         </div>
+
         <div className="auth__input__container">
-          <label htmlFor="update_brand">Brand: </label>
+          <label htmlFor="update_material">Material: </label>
           <input
-            id="update_brand"
+            id="update_material"
             type="text"
-            onChange={(e) => setBrand(e.target.value)}
-            value={brand}
+            onChange={(e) => setMaterial(e.target.value)}
+            value={material}
             required
           />
         </div>
@@ -150,36 +180,6 @@ export default function AdminEditProduct() {
             required
           />
         </div>
-        <div className="auth__input__container">
-          <label htmlFor="update_stock">Count In Stock: </label>
-          <input
-            id="update_stock"
-            type="number"
-            onChange={(e) => setStock(e.target.value)}
-            value={stock}
-            min="0"
-            required
-          />
-        </div>
-
-        <div className="auth__checkbox">
-          <input
-            id="update_newArrivals"
-            type="checkbox"
-            checked={newArrivals}
-            onChange={(e) => setNewArrivals(!newArrivals)}
-          />
-          <label htmlFor="update_newArrivals">New Arrivals?</label>
-        </div>
-        <div className="auth__checkbox">
-          <input
-            id="update_recommend"
-            type="checkbox"
-            checked={isRecommend}
-            onChange={(e) => setIsRecommend(!isRecommend)}
-          />
-          <label htmlFor="update_recommend">Recommend?</label>
-        </div>
 
         <div className="product-image-upload__container">
           <label htmlFor="product-image-upload">Image: </label>
@@ -188,8 +188,7 @@ export default function AdminEditProduct() {
             style={{ border: "none ", borderRadius: "0" }}
             type="file"
             accept="image/*"
-            multiple
-            onChange={(e) => setImg(e.target.files)}
+            onChange={(e) => setImg(e.target.files[0])}
           />
         </div>
 

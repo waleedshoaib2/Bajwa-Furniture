@@ -47,7 +47,6 @@ export default function HeaderAdmin({
           sx={MenuItemStyle}
         >
           Users
-          
         </MenuItem>
 
         <MenuItem
@@ -70,6 +69,12 @@ export default function HeaderAdmin({
         </MenuItem>
         <MenuItem onClick={() => navigate("/profile")} sx={MenuItemStyle}>
           Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => navigate("/admin/newsletter/")}
+          sx={MenuItemStyle}
+        >
+          Newsletter
         </MenuItem>
         <MenuItem onClick={logoutHandler} sx={MenuItemStyle}>
           Logout

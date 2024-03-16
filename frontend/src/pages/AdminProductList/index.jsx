@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { adminGetProducts, adminDeleteProduct } from "../../lib/axiosAPI";
 import { logout } from "../../redux/action/apiUserAction";
-import Paginate from "../../components/Paginate/index.jsx";
-import { useSearchParams } from "react-router-dom";
 import DisplayPending from "../../components/DisplayPending";
 import Alert from "@mui/material/Alert";
 
@@ -13,17 +11,17 @@ export default function AdminProductList() {
   const navigate = useNavigate();
   const [pending, setPending] = React.useState(true);
   const [error, setError] = React.useState();
-  const [searchParams] = useSearchParams();
-  const currPageQuery = searchParams.get("currPage");
 
   let { userInfo } = useSelector((state) => state.user);
   let [products, setProducts] = React.useState([]);
 
   const getAllProducts = useCallback(() => {
-    adminGetProducts(userInfo, currPageQuery)
+    adminGetProducts(userInfo)
       .then(function (res) {
         setPending(false);
+        console.log(res.data);
         setProducts(res.data);
+        console.log(products);
       })
       .catch(function (error) {
         setPending(false);
@@ -33,7 +31,7 @@ export default function AdminProductList() {
           setError(error.response.data.message);
         }
       });
-  }, [dispatch, userInfo, currPageQuery]);
+  }, [dispatch, userInfo]);
 
   const deleteProduct = (productID) => {
     window.scrollTo(0, 0);
@@ -85,12 +83,12 @@ export default function AdminProductList() {
             </tr>
           </thead>
           <tbody>
-            {products.products?.map((product) => {
+            {products.map((product) => {
               return (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
-                  <td>$ {product.price / 100}</td>
+                  <td>$ {product.price}</td>
                   <td>{product.category}</td>
                   <td>
                     <img
@@ -112,7 +110,6 @@ export default function AdminProductList() {
             })}
           </tbody>
         </table>
-        <Paginate page={products.page} pages={products.pages} />
       </div>
     </div>
   );

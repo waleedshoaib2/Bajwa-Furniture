@@ -27,9 +27,9 @@ export default function AdminCreateProduct() {
     e.preventDefault();
     window.scrollTo(0, 0);
     setPending(true);
-    setFormError(null); // Clear any previous errors
+    setFormError(null);
 
-    // Basic client-side validation
+  
     if (!name || !description) {
       setFormError('Please fill in both the name and description fields');
       setPending(false); 
@@ -39,9 +39,7 @@ export default function AdminCreateProduct() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
-    console.log(name, description)
-
-    console.log(formData)
+   
 
     try {
       const res = await adminCreateCategory(userInfo, formData);
@@ -69,7 +67,7 @@ export default function AdminCreateProduct() {
           <Alert severity="error">{error}</Alert>
         ) : null}
 
-        <div className="auth__title">Create new Product</div>
+        <div className="auth__title">Create new Category</div>
 
         <div className="auth__input__container">
           <label htmlFor="update_name">Name: </label>

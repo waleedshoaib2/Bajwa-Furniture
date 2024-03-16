@@ -8,47 +8,17 @@ import Paginate from "../../components/Paginate/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../redux/action/apiProductList.js";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useEffect } from "react";
 export default function AllProducts() {
-
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
-  const currPageQuery = searchParams.get("currPage");
-  const sortQuery = searchParams.get("sortBy");
-  const inStockQuery = searchParams.get("inStock");
-  const categoryQuery = searchParams.get("category");
-  const brandQuery = searchParams.get("brand");
-  const minPriceQuery = searchParams.get("minPrice");
-  const maxPriceQuery = searchParams.get("maxPrice");
+
   const { productListInfo } = productList;
 
-
   React.useEffect(() => {
-    
-    getProductList(
-      dispatch,
-      searchQuery,
-      currPageQuery,
-      sortQuery,
-      inStockQuery,
-      categoryQuery,
-      brandQuery,
-      minPriceQuery,
-      maxPriceQuery
-    );
-  }, [
-    dispatch,
-    searchQuery,
-    currPageQuery,
-    sortQuery,
-    inStockQuery,
-    categoryQuery,
-    brandQuery,
-    minPriceQuery,
-    maxPriceQuery,
-  ]);
+    getProductList(dispatch, searchQuery);
+  }, [dispatch, searchQuery]);
 
   return (
     <div className="allproducts">

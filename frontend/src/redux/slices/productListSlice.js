@@ -14,6 +14,7 @@ export const productListSlice = createSlice({
     },
     updateProductSuccess: (state, action) => {
       state.pending = false;
+      console.log(action.payload);
       state.productListInfo = action.payload;
     },
     updateProductFailed: (state, action) => {

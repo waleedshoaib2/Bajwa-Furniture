@@ -1,12 +1,10 @@
 import axios from "axios";
 
 export const baseURL = "http://localhost:4000";
-// export const baseURL = "http://localhost:5000";
 
 export const getRecommendProducts = async () => {
   return await axios.get(`${baseURL}/api/products/recommend`);
 };
-
 export const getNewArrivals = async () => {
   return await axios.get(`${baseURL}/api/products/newarrivals`);
 };
@@ -18,31 +16,33 @@ export const userGetAllOrders = async (userInfo, currPageQuery) => {
     },
   };
   return await axios.get(
-    'http://localhost:4000/api/orders/myorders?pageNumber=${currPageQuery}',
+    "http://localhost:4000/api/orders/myorders?pageNumber=${currPageQuery}",
     config
   );
 };
 
 export const adminCreateProduct = async (userInfo, formData) => {
-
   const config = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Authorization: `Bearer ${userInfo.token}`, 
+      Authorization: `Bearer ${userInfo.token}`,
     },
-    body: formData
+    body: formData,
   };
 
   try {
-    const response = await fetch('http://localhost:4000/product/products/', config);
+    const response = await fetch(
+      "http://localhost:4000/product/products/",
+      config
+    );
     const data = await response.json(); // Assuming a JSON response
-    return data; 
+    return data;
   } catch (error) {
-    console.log("some")
+    console.log("some");
     console.error("Error creating product:", error);
-    // You might want to do more robust error handling here 
-    throw error; // Re-throw to allow handling at a higher level
-  } 
+
+    throw error;
+  }
 };
 
 export const adminGetOrder = async (userInfo, id) => {
@@ -72,7 +72,18 @@ export const adminGetProduct = async (userInfo, id) => {
       Bearer: `${userInfo.token}`,
     },
   };
-  return await axios.get(`http://localhost:4000/api/products/${id}`, config);
+  return await axios.get(
+    `http://localhost:4000/product/products/${id}`,
+    config
+  );
+};
+export const adminGetCategorybyID = async (userInfo, id) => {
+  const config = {
+    headers: {
+      Bearer: `${userInfo.token}`,
+    },
+  };
+  return await axios.get(`http://localhost:4000/categories/${id}`, config);
 };
 
 export const adminUpdateProduct = async (userInfo, id, formData) => {
@@ -82,7 +93,25 @@ export const adminUpdateProduct = async (userInfo, id, formData) => {
       "Content-Type": "multipart/form-data",
     },
   };
-  return await axios.put(`${baseURL}/api/products/${id}`, formData, config);
+  return await axios.put(
+    `http://localhost:4000/product/products/${id}`,
+    formData,
+    config
+  );
+};
+
+export const adminUpdateCategory = async (userInfo, id, formData) => {
+  const config = {
+    headers: {
+      Bearer: `${userInfo.token}`,
+      "Content-Type": "application/json",
+    },
+  };
+  return await axios.put(
+    `http://localhost:4000/categories/${id}`,
+    formData,
+    config
+  );
 };
 
 export const adminGetUser = async (userInfo, id) => {
@@ -115,18 +144,14 @@ export const adminGetOrders = async (userInfo, pageNumber) => {
   );
 };
 
-export const adminGetProducts = async (userInfo, pageNumber) => {
+export const adminGetProducts = async (userInfo) => {
   const config = {
     headers: {
       Bearer: `${userInfo.token}`,
     },
   };
-  return await axios.get(
-    `http://localhost:4000/api/products?pageNumber=${pageNumber}`,
-    config
-  );
+  return await axios.get("http://localhost:4000/product/getall", config);
 };
-
 
 export const adminGetCategory = async (userInfo) => {
   const config = {
@@ -134,63 +159,64 @@ export const adminGetCategory = async (userInfo) => {
       Bearer: `${userInfo.token}`,
     },
   };
-  return await axios.get(
-    `http://localhost:4000/api/categories/`,
-    config
-  );
+  return await axios.get(`http://localhost:4000/categories/`, config);
 };
 
 export const adminDeleteCategory = async (userInfo, categoryID) => {
   try {
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`, 
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
     const { data } = await axios.delete(
-      `http://localhost:4000/api/categories/${categoryID}`, // Adjust your API endpoint URL
+      `http://localhost:4000/categories/${categoryID}`,
       config
     );
 
-    return data; // Assuming your API returns a success message or relevant data
+    return data;
   } catch (error) {
-    throw error; // Pass the error up for handling in your component
+    throw error;
   }
 };
 
-
 export const adminCreateCategory = async (userInfo, formData) => {
-  console.log(formData)
+  for (const pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
   const config = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Authorization: `Bearer ${userInfo.token}`, // Assuming 'Authorization' header is needed
+      Authorization: `Bearer ${userInfo.token}`,
+      "Content-Type": "application/json", // Set to JSON
     },
-    body: formData
+    body: JSON.stringify(Object.fromEntries(formData)),
   };
 
   try {
-    const response = await fetch('http://localhost:4000/api/categories/', config);
+    const response = await fetch("http://localhost:4000/categories/", config);
 
     const data = await response.json(); // Assuming a JSON response
-    return data; 
+    return data;
   } catch (error) {
-    console.log("some")
+    console.log("some");
     console.error("Error creating product:", error);
-    // You might want to do more robust error handling here 
-    throw error; // Re-throw to allow handling at a higher level
-  } 
+
+    throw error;
+  }
 };
 export const adminDeleteProduct = async (userInfo, id) => {
   console.log(userInfo);
   const config = {
-   
     headers: {
-      Authorization: `Bearer ${userInfo.token}`, // Assuming 'Authorization' header is needed
+      Authorization: `Bearer ${userInfo.token}`,
     },
   };
-  return await axios.delete(`http://localhost:4000/api/products/${id}`, config);
+  return await axios.delete(
+    `http://localhost:4000/product/products/${id}`,
+    config
+  );
 };
 
 export const adminGetAllUsers = async (userInfo, pageNumber) => {

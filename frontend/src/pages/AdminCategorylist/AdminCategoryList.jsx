@@ -1,10 +1,8 @@
 import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminDeleteCategory } from "../../lib/axiosAPI"; // Update your API function
+import { adminDeleteCategory } from "../../lib/axiosAPI";
 import { logout } from "../../redux/action/apiUserAction";
-import Paginate from "../../components/Paginate/index.jsx";
-import { useSearchParams } from "react-router-dom";
 import DisplayPending from "../../components/DisplayPending";
 import Alert from "@mui/material/Alert";
 import { adminGetCategory } from "../../lib/axiosAPI.js";
@@ -14,18 +12,16 @@ export default function AdminCategoryList() {
   const navigate = useNavigate();
   const [pending, setPending] = React.useState(true);
   const [error, setError] = React.useState();
-  const [searchParams] = useSearchParams();
-  const currPageQuery = searchParams.get("currPage");
 
   let { userInfo } = useSelector((state) => state.user);
-  let [categories, setCategories] = React.useState([]); // Update state to store categories
+  let [categories, setCategories] = React.useState([]);
 
   const getAllCategories = useCallback(() => {
-    adminGetCategory(userInfo, currPageQuery) // Update API function call
+    adminGetCategory(userInfo)
       .then(function (res) {
         setPending(false);
         setCategories(res.data);
-        console.log(res)
+        console.log(res);
       })
       .catch(function (error) {
         setPending(false);
@@ -35,11 +31,11 @@ export default function AdminCategoryList() {
           setError(error.response.data.message);
         }
       });
-  }, [dispatch, userInfo, currPageQuery]);
+  }, [dispatch, userInfo]);
 
   const deleteCategory = (categoryID) => {
     window.scrollTo(0, 0);
-    adminDeleteCategory(userInfo, categoryID) // Update API function call
+    adminDeleteCategory(userInfo, categoryID)
       .then(function (res) {
         getAllCategories();
       })
@@ -71,7 +67,7 @@ export default function AdminCategoryList() {
           className="admin-add-button"
           onClick={() => {
             window.scrollTo(0, 0);
-            navigate("/admin/createcategory"); // Update navigation path
+            navigate("/admin/createcategory");
           }}
         >
           Add New Category
@@ -80,23 +76,23 @@ export default function AdminCategoryList() {
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Name</th> 
+              <th scope="col">Name</th>
               <th scope="col">Edit/Delete</th>
             </tr>
           </thead>
           <tbody>
-            {categories?.map((category) => { // Update data mapping
+            {categories?.map((category) => {
               return (
                 <tr key={category._id}>
                   <td>{category._id}</td>
-                  <td>{category.name}</td>                 
+                  <td>{category.name}</td>
                   <td>
-                  <img
+                    <img
                       src="https://d2c0vv5h4nuw6w.cloudfront.net/icons/edit.png"
                       alt="edit_icon"
                       onClick={() => {
                         window.scrollTo(0, 0);
-                        navigate(`/admin/editproduct/${category._id}`);
+                        navigate(`/admin/editcategory/${category._id}`);
                       }}
                     />
                     <img
@@ -110,7 +106,6 @@ export default function AdminCategoryList() {
             })}
           </tbody>
         </table>
-    
       </div>
     </div>
   );

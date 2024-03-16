@@ -30,6 +30,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfServices from "./pages/TermsOfServices";
 import AdminCategoryList from "./pages/AdminCategorylist/AdminCategoryList";
 import AdminCreateCategory from "./pages/AdminCreateCategory/index";
+import AdminEditCategory from "./pages/AdminCategoryEdit";
+import AdminNewsletter from "./pages/AdminNewsletter";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -68,21 +70,32 @@ function App() {
             <Route path="/admin/userlist" element={<AdminUserList />} />
             <Route path="/admin/editUser/:id" element={<AdminEditUser />} />
             <Route path="/admin/productlist/" element={<AdminProductList />} />
-            <Route path = "/admin/categorylist/" element = {<AdminCategoryList />} />
+            <Route
+              path="/admin/categorylist/"
+              element={<AdminCategoryList />}
+            />
+            <Route path="/admin/newsletter/" element={<AdminNewsletter />} />
+
             <Route
               path="/admin/editproduct/:id"
               element={<AdminEditProduct />}
+            />
+
+            <Route
+              path="/admin/editcategory/:id"
+              element={<AdminEditCategory />}
             />
             <Route
               path="/admin/createproduct/"
               element={<AdminCreateProduct />}
             />
+
             <Route path="/admin/orderlist/" element={<AdminOrderList />} />
             <Route
               path="/admin/orderdetails/:id"
               element={<AdminEditOrder />}
             />
-             <Route
+            <Route
               path="/admin/createcategory/"
               element={<AdminCreateCategory />}
             />

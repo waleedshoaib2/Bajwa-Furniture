@@ -5,33 +5,17 @@ import {
   productListReset,
 } from "../slices/productListSlice";
 import axios from "axios";
-import { baseURL } from "../../lib/axiosAPI";
 
-export const getProductList = async (
-  dispatch,
-  search = "",
-  pageNumber = "",
-  sortBy = "",
-  inStockQuery = "",
-  categoryQuery = "",
-  brandQuery = "",
-  minPriceQuery = "",
-  maxPriceQuery = ""
-) => {
+export const getProductList = async (dispatch, search = "") => {
   dispatch(productListReset());
   dispatch(updateProductStart());
+
   try {
     const result = await axios.get(
-      `http://localhost:4000/api/products?search=${search}&` +
-        `pageNumber=${pageNumber}&` +
-        `sortBy=${sortBy}&` +
-        `inStockQuery=${inStockQuery}&` +
-        `categoryQuery=${categoryQuery}&` +
-        `brandQuery=${brandQuery}&` +
-        `minPriceQuery=${minPriceQuery}&` +
-        `maxPriceQuery=${maxPriceQuery}`
+      `http://localhost:4000/product/getall/?search=${search}`
     );
-    dispatch(updateProductSuccess(result.data));
+    console.log(result);
+    dispatch(updateProductSuccess(result.data.products));
   } catch (error) {
     dispatch(
       updateProductFailed(
